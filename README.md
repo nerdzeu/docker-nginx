@@ -16,8 +16,8 @@ Use it as part of nerdzeu/docker.
 If you want to pull and run the image you can do it in the classical docker way:
 
 ```sh
-docker pull nerdzeu/docker
-docker run nerdzeu/docker
+docker pull nerdzeu/docker-nginx
+docker run nerdzeu/docker-nginx
 ```
 
 If you want to build the image:
