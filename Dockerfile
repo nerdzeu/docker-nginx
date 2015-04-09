@@ -2,7 +2,7 @@ FROM base/archlinux
 MAINTAINER Paolo Galeone <nessuno@nerdz.eu>
 
 RUN sed -i -e 's#https://mirrors\.kernel\.org#http://mirror.clibre.uqam.ca#g' /etc/pacman.d/mirrorlist && \
-       pacman -Sy  wget base-devel nginx libunistring --noconfirm
+       pacman -Sy base-devel nginx subversion libunistring --noconfirm
 
 COPY builder /opt/
 RUN bash /opt/builder

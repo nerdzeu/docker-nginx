@@ -1,9 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-wget http://nginx.org/download/nginx-1.6.2.tar.gz
+set -e
 
-tar xf nginx-1.6.2.tar.gz
-cd nginx-1.6.2
+cd /tmp
+svn checkout svn://svn.archlinux.org/packages/nginx/trunk nginx
+cd nginx
+
+head -n $(expr $(awk '/\.\/configure/ { print FNR }' < PKGBUILD) - 1) PKGBUILD > pknew
+cat  << EOF >> pknew
 ./configure --prefix=/etc/nginx \
     --sbin-path=/usr/sbin/nginx \
     --conf-path=/etc/nginx/nginx.conf \
@@ -21,10 +25,13 @@ cd nginx-1.6.2
     --with-http_ssl_module \
     --with-http_perl_module \
     --with-http_spdy_module \
-    --with-ipv6 \
-    --with-cc-opt='-O2 -g -pipe -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m64 -mtune=generic' \
-    --with-ld-opt='-Wl,-E'
+    --with-ipv6
+EOF
 
-make && make install
-cd ..
-rm -rf nginx-1.6.2*
+tail -n $(expr $(wc -l < PKGBUILD) - $(awk '/make$/ { print FNR }' < PKGBUILD) + 1) PKGBUILD >> pknew
+
+mv pknew PKGBUILD
+
+env PKGEXT=".pkg.tar" makepkg
+pacman -U --noconfirm *.pkg.tar
+cd && rm -rf /tmp/nginx
