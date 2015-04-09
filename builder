@@ -9,7 +9,7 @@ cd nginx
 head -n $(expr $(awk '/\.\/configure/ { print FNR }' < PKGBUILD) - 1) PKGBUILD > pknew
 cat  << EOF >> pknew
 ./configure --prefix=/etc/nginx \
-    --sbin-path=/usr/sbin/nginx \
+    --sbin-path=/usr/bin/nginx \
     --conf-path=/etc/nginx/nginx.conf \
     --error-log-path=/var/log/nginx/error.log \
     --http-log-path=/var/log/nginx/access.log \
@@ -31,7 +31,7 @@ EOF
 tail -n $(expr $(wc -l < PKGBUILD) - $(awk '/make$/ { print FNR }' < PKGBUILD) + 1) PKGBUILD >> pknew
 
 mv pknew PKGBUILD
-
-env PKGEXT=".pkg.tar" makepkg
-pacman -U --noconfirm *.pkg.tar
+chown -R nobody:nobody /tmp/nginx
+sudo -u nobody env PKGEXT=".pkg.tar" makepkg
+pacman -U --noconfirm /tmp/nginx/*.pkg.tar
 cd && rm -rf /tmp/nginx
