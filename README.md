@@ -1,4 +1,4 @@
-# nerdzeu/nginx-php
+# nerdzeu/nginx
 
 This repo is part of the docker enviroment for nerdz (`nerdzeu/docker`).
 
