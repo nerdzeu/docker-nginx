@@ -6,7 +6,7 @@ RUN sed -i -e 's#https://mirrors\.kernel\.org#http://mirror.clibre.uqam.ca#g' /e
        pacman-key --init && pacman-key --populate archlinux
 RUN pacman -Sy sudo base-devel nginx subversion libunistring --noconfirm
 RUN pacman-db-upgrade
-RUN pacman -S hardening-wrapper  --noconfirm
+RUN pacman -S hardening-wrapper geoip --noconfirm
 
 COPY builder /opt/
 RUN bash /opt/builder
