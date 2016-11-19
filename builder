@@ -24,7 +24,7 @@ cat  << EOF >> pknew
     --group=http \
     --with-http_ssl_module \
     --with-http_perl_module \
-    --with-http_spdy_module \
+    --with-http_v2_module \
     --with-ipv6
 EOF
 
@@ -32,6 +32,6 @@ tail -n $(expr $(wc -l < PKGBUILD) - $(awk '/make$/ { print FNR }' < PKGBUILD) +
 
 mv pknew PKGBUILD
 chown -R nobody:nobody /tmp/nginx
-sudo -u nobody env PKGEXT=".pkg.tar" makepkg
+sudo -u nobody env PKGEXT=".pkg.tar" makepkg --skippgpcheck
 pacman -U --noconfirm /tmp/nginx/*.pkg.tar
 cd && rm -rf /tmp/nginx

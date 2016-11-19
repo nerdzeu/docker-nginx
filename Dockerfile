@@ -1,13 +1,10 @@
-FROM base/archlinux
+FROM galeone/archlinux-updated-aur
 MAINTAINER Paolo Galeone <nessuno@nerdz.eu>
 
-RUN sed -i -e 's#https://mirrors\.kernel\.org#http://mirror.clibre.uqam.ca#g' /etc/pacman.d/mirrorlist && \
-       pacman -Sy haveged archlinux-keyring --noconfirm && haveged -w 1024 -v 1 && \
-       pacman-key --init && pacman-key --populate archlinux
-RUN pacman -Sy sudo base-devel nginx subversion libunistring --noconfirm
-RUN pacman-db-upgrade
-RUN pacman -S hardening-wrapper geoip --noconfirm
+USER aur
+RUN pacaur -S hardening-wrapper geoip --noconfirm
 
+USER root
 COPY builder /opt/
 RUN bash /opt/builder
 
